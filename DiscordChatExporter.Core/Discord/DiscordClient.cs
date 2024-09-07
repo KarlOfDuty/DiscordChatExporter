@@ -12,7 +12,6 @@ using DiscordChatExporter.Core.Discord.Data;
 using DiscordChatExporter.Core.Exceptions;
 using DiscordChatExporter.Core.Utils;
 using DiscordChatExporter.Core.Utils.Extensions;
-using Gress;
 using JsonExtensions.Http;
 using JsonExtensions.Reading;
 
@@ -566,7 +565,7 @@ public class DiscordClient(string token)
         Snowflake channelId,
         Snowflake? after = null,
         Snowflake? before = null,
-        IProgress<Percentage>? progress = null,
+        object? progress = null,
         [EnumeratorCancellation] CancellationToken cancellationToken = default
     )
     {
@@ -635,7 +634,7 @@ public class DiscordClient(string token)
                     var exportedDuration = (message.Timestamp - firstMessage.Timestamp).Duration();
                     var totalDuration = (lastMessage.Timestamp - firstMessage.Timestamp).Duration();
 
-                    progress.Report(
+                    /*progress.Report(
                         Percentage.FromFraction(
                             // Avoid division by zero if all messages have the exact same timestamp
                             // (which happens when there's only one message in the channel)
@@ -643,7 +642,7 @@ public class DiscordClient(string token)
                                 ? exportedDuration / totalDuration
                                 : 1
                         )
-                    );
+                    );*/
                 }
 
                 yield return message;

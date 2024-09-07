@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using DiscordChatExporter.Core.Discord;
 using DiscordChatExporter.Core.Discord.Data;
 using DiscordChatExporter.Core.Exceptions;
-using Gress;
 
 namespace DiscordChatExporter.Core.Exporting;
 
@@ -12,7 +11,7 @@ public class ChannelExporter(DiscordClient discord)
 {
     public async ValueTask ExportChannelAsync(
         ExportRequest request,
-        IProgress<Percentage>? progress = null,
+        object? progress = null,
         CancellationToken cancellationToken = default
     )
     {
