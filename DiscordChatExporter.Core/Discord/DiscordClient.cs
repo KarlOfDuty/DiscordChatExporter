@@ -132,25 +132,21 @@ public class DiscordClient(string token)
         {
             throw response.StatusCode switch
             {
-                HttpStatusCode.Unauthorized
-                    => throw new DiscordChatExporterException(
-                        "Authentication token is invalid.",
-                        true
-                    ),
+                HttpStatusCode.Unauthorized => throw new DiscordChatExporterException(
+                    "Authentication token is invalid.",
+                    true
+                ),
 
-                HttpStatusCode.Forbidden
-                    => throw new DiscordChatExporterException(
-                        $"Request to '{url}' failed: forbidden."
-                    ),
+                HttpStatusCode.Forbidden => throw new DiscordChatExporterException(
+                    $"Request to '{url}' failed: forbidden."
+                ),
 
-                HttpStatusCode.NotFound
-                    => throw new DiscordChatExporterException(
-                        $"Request to '{url}' failed: not found."
-                    ),
+                HttpStatusCode.NotFound => throw new DiscordChatExporterException(
+                    $"Request to '{url}' failed: not found."
+                ),
 
-                _
-                    => throw new DiscordChatExporterException(
-                        $"""
+                _ => throw new DiscordChatExporterException(
+                    $"""
                         Request to '{url}' failed: {response
                             .StatusCode.ToString()
                             .ToSpaceSeparatedWords()
@@ -159,8 +155,8 @@ public class DiscordClient(string token)
                             cancellationToken
                         )}
                         """,
-                        true
-                    )
+                    true
+                ),
             };
         }
 
