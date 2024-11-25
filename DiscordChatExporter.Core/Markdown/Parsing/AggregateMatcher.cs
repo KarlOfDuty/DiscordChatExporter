@@ -3,9 +3,12 @@
 namespace DiscordChatExporter.Core.Markdown.Parsing;
 
 internal class AggregateMatcher<TContext, TValue>(
-    params IReadOnlyList<IMatcher<TContext, TValue>> matchers
+    IReadOnlyList<IMatcher<TContext, TValue>> matchers
 ) : IMatcher<TContext, TValue>
 {
+    public AggregateMatcher(params IMatcher<TContext, TValue>[] matchers)
+        : this((IReadOnlyList<IMatcher<TContext, TValue>>)matchers) { }
+
     public ParsedMatch<TValue>? TryMatch(TContext context, StringSegment segment)
     {
         ParsedMatch<TValue>? earliestMatch = null;
@@ -25,9 +28,7 @@ internal class AggregateMatcher<TContext, TValue>(
                 earliestMatch is null
                 || match.Segment.StartIndex < earliestMatch.Segment.StartIndex
             )
-            {
                 earliestMatch = match;
-            }
 
             // If the earliest match starts at the very beginning - break,
             // because it's impossible to find a match earlier than that
