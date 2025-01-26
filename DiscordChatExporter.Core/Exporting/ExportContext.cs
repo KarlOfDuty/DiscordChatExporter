@@ -18,8 +18,10 @@ internal class ExportContext(DiscordClient discord, ExportRequest request)
     private readonly Dictionary<Snowflake, Channel> _channelsById = new();
     private readonly Dictionary<Snowflake, Role> _rolesById = new();
 
-    private readonly ExportAssetDownloader _assetDownloader =
-        new(request.AssetsDirPath, request.ShouldReuseAssets);
+    private readonly ExportAssetDownloader _assetDownloader = new(
+        request.AssetsDirPath,
+        request.ShouldReuseAssets
+    );
 
     public DiscordClient Discord { get; } = discord;
 
@@ -103,7 +105,8 @@ internal class ExportContext(DiscordClient discord, ExportRequest request)
 
     public async ValueTask<string> ResolveAssetUrlAsync(
         string url,
-        CancellationToken cancellationToken = default
+        CancellationToken cancellationToken = default,
+        DateTimeOffset? timestamp = null
     )
     {
         if (!Request.ShouldDownloadAssets)
@@ -111,7 +114,7 @@ internal class ExportContext(DiscordClient discord, ExportRequest request)
 
         try
         {
-            var filePath = await _assetDownloader.DownloadAsync(url, cancellationToken);
+            var filePath = await _assetDownloader.DownloadAsync(url, cancellationToken, timestamp);
             var relativeFilePath = Path.GetRelativePath(Request.OutputDirPath, filePath);
 
             // Prefer the relative path so that the export package can be copied around without breaking references.
